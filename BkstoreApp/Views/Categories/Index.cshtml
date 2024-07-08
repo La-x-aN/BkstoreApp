@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BkstoreApp.Models.Category>
+
+<h2>Categories</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@category.Id">Edit</a> |
+                    <button type="button" class="btn btn-link" onclick="deleteCategory(@category.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Create" class="btn btn-primary">Add New category</a>
+
+<script>
+    function deleteCategory(id) {
+        fetch(`/Categories/Delete?id=${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/Categories/Index';
+                } else {
+                    alert('Failed to delete the category.');
+                }
+            });
+    }
+</script>

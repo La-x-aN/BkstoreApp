@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BkstoreApp.Models.Book>
+
+<h2>Books</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>ISBN</th>
+            <th>AuthorId</th>
+            <th>CategoryId</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Id</td>
+                <td>@book.Title</td>
+                <td>@book.ISBN</td>
+                <td>@book.AuthorId</td>
+                <td>@book.CategoryId</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@book.Id">Edit</a> |
+                    <button type="button" class="btn btn-link" onclick="deleteBook(@book.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Create" class="btn btn-primary">Add New Book</a>
+
+<script>
+    function deleteBook(id) {
+        fetch(`/Books/Delete?id=${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/Books/Index';
+                } else {
+                    alert('Failed to delete the book.');
+                }
+            });
+    }
+</script>

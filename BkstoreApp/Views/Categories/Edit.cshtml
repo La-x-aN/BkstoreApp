@@ -1,0 +1,40 @@
+﻿@model BkstoreApp.Models.Category
+
+<h2>Edit Category</h2>
+
+<form id="editForm">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="submitEditForm()">Save</button>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    function submitEditForm() {
+        var form = document.getElementById('editForm');
+        var data = new FormData(form);
+
+        fetch('@Url.Action("Edit", "Categories")', {
+            method: 'PUT',
+            body: JSON.stringify(Object.fromEntries(data.entries())),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '@Url.Action("Index", "Categories")';
+                } else {
+                    alert('Failed to save the Catogory.');
+                }
+            });
+    }
+</script>

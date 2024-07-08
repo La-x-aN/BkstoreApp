@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BkstoreApp.Models.Author>
+
+<h2>Authors</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var author in Model)
+        {
+            <tr>
+                <td>@author.Id</td>
+                <td>@author.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@author.Id">Edit</a> |
+                    <button type="button" class="btn btn-link" onclick="deleteAuthor(@author.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Create" class="btn btn-primary">Add New Author</a>
+
+<script>
+    function deleteAuthor(id) {
+        fetch(`/Authors/Delete?id=${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/Authors/Index';
+                } else {
+                    alert('Failed to delete the author.');
+                }
+            });
+    }
+</script>
